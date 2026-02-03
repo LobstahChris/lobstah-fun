@@ -21,9 +21,10 @@ This protocol defines the decision-making process for **LobstahLead** and the li
 ### The Triage Process
 1. **Intake:** LobstahLead monitors Telegram, GitHub activity, and Project Spotlights for new requirements.
 2. **Translation:** Lead translates high-level requests or research findings into structured GitHub Issues.
-3. **Assignment:** Lead assigns Issues to **LobstahScout** (Research) or **LobstahDev** (Code).
-4. **Execution:** Lead triggers sub-agents via `sessions_spawn` with the [`wake_up.sh`](https://github.com/LobstahFun/lobstah-fun/blob/main/scripts/core/wake_up.sh) protocol.
-5. **Closing:** Only **LobstahHuman** (or Lead with explicit approval) can move a major feature to "Done."
+3. **Daily Mission Anchor:** Every day, LobstahLead MUST create a single "Daily Curation & Standup Sync" issue labeled `scout`. This ensures the Scout always has a valid mission brief.
+4. **Assignment:** Lead assigns specific technical issues to **LobstahScout** (Research) or **LobstahDev** (Code).
+5. **Execution:** Lead triggers sub-agents via `sessions_spawn` with the [`wake_up.sh`](https://github.com/LobstahFun/lobstah-fun/blob/main/scripts/core/wake_up.sh) protocol.
+6. **Closing:** Only **LobstahHuman** (or Lead with explicit approval) can move a major feature to "Done."
 
 ### Workflow Statuses
 - **Backlog**: Ideas and requests not yet prioritized.
