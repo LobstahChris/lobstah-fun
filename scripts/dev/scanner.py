@@ -19,6 +19,8 @@ INTEL_DIR = f"{REPO_ROOT}/web/content/docs/project-spotlights/research/{PROJECT_
 def strip_tags(text):
     """Strip HTML-like tags and escape JSON-like braces to prevent MDX build errors."""
     import re
+    if text is None:
+        return ""
     # Strip HTML tags
     text = re.sub(r'<[^>]+>', '', text)
     # Escape { and } by wrapping in code blocks or using backticks if they look like JSON
