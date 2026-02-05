@@ -5,13 +5,81 @@
 
 export const traderDashboardData = {
     "address": "0x63ce342161250d705dc0b16df89036c8e5f9ba9a",
-    "lastUpdated": "2026-02-05T16:45:55.827Z",
+    "lastUpdated": "2026-02-05T16:48:48.706Z",
+    "stats": {
+        "totalTrades": 34398,
+        "activePositions": 10,
+        "totalActivePnL": 1135291.523467841
+    },
     "summary": {
         "totalGain": 1529159.183385841,
         "totalLoss": 393867.659918,
         "netPnl": 1135291.523467841,
         "numTrades": 34398
     },
+    "positions": [
+        {
+            "title": "Bitcoin Up or Down - February 5, 9:30AM-9:45AM ET",
+            "size": 2854,
+            "avgPrice": 0,
+            "percentPnl": 0
+        },
+        {
+            "title": "Bitcoin Up or Down - February 5, 10:15AM-10:30AM ET",
+            "size": 2312,
+            "avgPrice": 0,
+            "percentPnl": 0
+        },
+        {
+            "title": "Ethereum Up or Down - February 5, 9:30AM-9:45AM ET",
+            "size": 1940,
+            "avgPrice": 0,
+            "percentPnl": 0
+        },
+        {
+            "title": "Bitcoin Up or Down - February 5, 7:45AM-8:00AM ET",
+            "size": 1573,
+            "avgPrice": 0,
+            "percentPnl": 0
+        },
+        {
+            "title": "Bitcoin Up or Down - February 5, 7:30AM-7:45AM ET",
+            "size": 1551,
+            "avgPrice": 0,
+            "percentPnl": 0
+        },
+        {
+            "title": "Bitcoin Up or Down - February 5, 8:30AM-8:45AM ET",
+            "size": 1380,
+            "avgPrice": 0,
+            "percentPnl": 0
+        },
+        {
+            "title": "Bitcoin Up or Down - February 5, 8:15AM-8:30AM ET",
+            "size": 1004,
+            "avgPrice": 0,
+            "percentPnl": 0
+        },
+        {
+            "title": "Bitcoin Up or Down - February 5, 10:45AM-11:00AM ET",
+            "size": 908,
+            "avgPrice": 0,
+            "percentPnl": 0
+        },
+        {
+            "title": "Ethereum Up or Down - February 5, 8:30AM-8:45AM ET",
+            "size": 905,
+            "avgPrice": 0,
+            "percentPnl": 0
+        },
+        {
+            "title": "Bitcoin Up or Down - February 5, 9:00AM-9:15AM ET",
+            "size": 901,
+            "avgPrice": 0,
+            "percentPnl": 0
+        }
+    ],
+    "trades": [],
     "topMarkets": [
         {
             "question": "Bitcoin Up or Down - February 5, 9:30AM-9:45AM ET",

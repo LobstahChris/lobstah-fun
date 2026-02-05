@@ -80,12 +80,24 @@ async function generateDashboards() {
         const dashboardData = {
             address: addr,
             lastUpdated: new Date().toISOString(),
+            stats: {
+                totalTrades: stats.trade_count,
+                activePositions: topMarkets.length, // Fallback logic
+                totalActivePnL: stats.total_gain - stats.total_loss
+            },
             summary: {
                 totalGain: stats.total_gain,
                 totalLoss: stats.total_loss,
                 netPnl: stats.total_gain - stats.total_loss,
                 numTrades: stats.trade_count
             },
+            positions: topMarkets.map(m => ({
+                title: m.question || "Unknown Market",
+                size: m.count, // Using count as size for now
+                avgPrice: 0,
+                percentPnl: 0
+            })),
+            trades: [], // Current warehouse Trades schema differs from expected dashboard Trades
             topMarkets: topMarkets.map(m => ({
                 question: m.question,
                 trades: m.count,
