@@ -5,7 +5,7 @@
 
 export const traderDashboardData = {
     "address": "0x63ce342161250d705dc0b16df89036c8e5f9ba9a",
-    "lastUpdated": "2026-02-05T16:48:48.706Z",
+    "lastUpdated": "2026-02-05T16:54:32.543Z",
     "stats": {
         "totalTrades": 34398,
         "activePositions": 10,
@@ -20,60 +20,70 @@ export const traderDashboardData = {
     "positions": [
         {
             "title": "Bitcoin Up or Down - February 5, 9:30AM-9:45AM ET",
+            "slug": "bitcoin-up-or-down---february-5-930am-945am-et",
             "size": 2854,
             "avgPrice": 0,
             "percentPnl": 0
         },
         {
             "title": "Bitcoin Up or Down - February 5, 10:15AM-10:30AM ET",
+            "slug": "bitcoin-up-or-down---february-5-1015am-1030am-et",
             "size": 2312,
             "avgPrice": 0,
             "percentPnl": 0
         },
         {
             "title": "Ethereum Up or Down - February 5, 9:30AM-9:45AM ET",
+            "slug": "ethereum-up-or-down---february-5-930am-945am-et",
             "size": 1940,
             "avgPrice": 0,
             "percentPnl": 0
         },
         {
             "title": "Bitcoin Up or Down - February 5, 7:45AM-8:00AM ET",
+            "slug": "bitcoin-up-or-down---february-5-745am-800am-et",
             "size": 1573,
             "avgPrice": 0,
             "percentPnl": 0
         },
         {
             "title": "Bitcoin Up or Down - February 5, 7:30AM-7:45AM ET",
+            "slug": "bitcoin-up-or-down---february-5-730am-745am-et",
             "size": 1551,
             "avgPrice": 0,
             "percentPnl": 0
         },
         {
             "title": "Bitcoin Up or Down - February 5, 8:30AM-8:45AM ET",
+            "slug": "bitcoin-up-or-down---february-5-830am-845am-et",
             "size": 1380,
             "avgPrice": 0,
             "percentPnl": 0
         },
         {
             "title": "Bitcoin Up or Down - February 5, 8:15AM-8:30AM ET",
+            "slug": "bitcoin-up-or-down---february-5-815am-830am-et",
             "size": 1004,
             "avgPrice": 0,
             "percentPnl": 0
         },
         {
             "title": "Bitcoin Up or Down - February 5, 10:45AM-11:00AM ET",
+            "slug": "bitcoin-up-or-down---february-5-1045am-1100am-et",
             "size": 908,
             "avgPrice": 0,
             "percentPnl": 0
         },
         {
             "title": "Ethereum Up or Down - February 5, 8:30AM-8:45AM ET",
+            "slug": "ethereum-up-or-down---february-5-830am-845am-et",
             "size": 905,
             "avgPrice": 0,
             "percentPnl": 0
         },
         {
             "title": "Bitcoin Up or Down - February 5, 9:00AM-9:15AM ET",
+            "slug": "bitcoin-up-or-down---february-5-900am-915am-et",
             "size": 901,
             "avgPrice": 0,
             "percentPnl": 0

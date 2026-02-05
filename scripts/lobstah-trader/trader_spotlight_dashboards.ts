@@ -93,7 +93,9 @@ async function generateDashboards() {
             },
             positions: topMarkets.map(m => ({
                 title: m.question || "Unknown Market",
-                size: m.count, // Using count as size for now
+                conditionId: m.condition_id,
+                slug: m.question ? m.question.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9-]/g, '') : null,
+                size: m.count,
                 avgPrice: 0,
                 percentPnl: 0
             })),

@@ -10,6 +10,16 @@ export function TraderDashboard({ data }: { data: any }) {
 
   return (
     <div className="not-prose space-y-8 my-8">
+      {/* Last Updated Timestamp */}
+      {data.lastUpdated && (
+        <div className="text-right text-xs text-muted-foreground italic">
+          Last Intelligence Sync: {new Date(data.lastUpdated).toLocaleString('en-US', { 
+            dateStyle: 'medium', 
+            timeStyle: 'short' 
+          })}
+        </div>
+      )}
+
       {/* Header Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="p-4 rounded-xl border bg-card text-card-foreground shadow-sm">
@@ -52,7 +62,20 @@ export function TraderDashboard({ data }: { data: any }) {
             <tbody className="divide-y">
               {positions.slice(0, 5).map((p: any, i: number) => (
                 <tr key={i} className="bg-background hover:bg-muted/50 transition-colors">
-                  <td className="px-4 py-3 font-medium truncate max-w-[200px]">{p.title}</td>
+                  <td className="px-4 py-3 font-medium truncate max-w-[200px]">
+                    {p.conditionId ? (
+                      <a 
+                        href={`https://polymarket.com/event/${p.slug || p.conditionId}`} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        {p.title}
+                      </a>
+                    ) : (
+                      p.title
+                    )}
+                  </td>
                   <td className="px-4 py-3 text-right font-mono">{p.size.toLocaleString()}</td>
                   <td className="px-4 py-3 text-right font-mono">${p.avgPrice.toFixed(2)}</td>
                   <td className={`px-4 py-3 text-right font-bold ${p.percentPnl >= 0 ? 'text-green-500' : 'text-red-500'}`}>
