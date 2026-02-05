@@ -12,12 +12,21 @@ Monitoring high-signal activity for address: `0x63ce342161250d705dc0b16df89036c8
 
 <TraderDashboard data={traderDashboardData} />
 
-## 🎯 Strategy Analysis
-Based on the harvest, this trader is heavily active in **Daily Up/Down** markets with high conviction sizes. 
+## 🎯 Strategy Analysis: The High-Frequency Arbitrageur
 
-- **Focus:** Bitcoin / Ethereum volatility.
-- **Risk Profile:** Aggressive.
-- **Execution Strategy:** Scalping short-term directional moves.
+Based on the warehouse deep-dive, `0x8dxd` operates as a **High-Frequency Market Maker (HFMM)** specializing in Polymarket's short-duration price prediction cycles.
+
+### 🏛️ Operational Profile
+- **Primary Theatre:** 15-minute and Hourly price discovery for major assets (BTC, ETH, SOL, XRP).
+- **Execution Style:** Dominates the order book on the **MAKER** side. By providing deep liquidity on both "Up" and "No" outcomes simultaneously, they capture the spread from retail "takers."
+- **Velocity:** Sync logs show bursts of **2,000+ trades per hour** during peak volatility windows (e.g., the 10:00-10:15 AM ET interval).
+
+### 📈 Financial Mastery
+- **Capital Efficiency:** They spend significant capital to accumulate shares (approx. $393k in the modern era), but recover nearly **80% of that cost** through high-probability redemptions.
+- **Profit Realization:** Their true alpha comes from the **Redemption Layer**. While the UI shows $1.06M in profit, technical on-chain redemptions suggest a lifetime capture of closer to **$5M**, much of which is recycled into new market intervals.
+
+### 🦞 Squad Assessment: "The Spread-Eater"
+This is not a directional bettor; they are an **Infrastructure Player**. Their strategy is indifferent to whether the price goes up or down, as long as there is enough volume to fill their orders and let them redeem the winning side for $1.00.
 
 ---
-*Data updated via LobstahScout crawler. For real-time execution, see the [Lobstah Trader](/docs/lobstah-trader/) engine logs.*
+*Intelligence refined via LobstahIntelligence Warehouse (SQLite High-Fidelity Sync).*
