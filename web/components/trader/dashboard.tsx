@@ -11,7 +11,7 @@ export function TraderDashboard({ data }: { data: any }) {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="p-4 rounded-xl border bg-card text-card-foreground shadow-sm">
           <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Total Trades</div>
-          <div className="text-2xl font-bold mt-1">{stats.totalTrades}</div>
+          <div className="text-2xl font-bold mt-1">{stats.totalTradesFetched || stats.totalTrades || 0}</div>
         </div>
         <div className="p-4 rounded-xl border bg-card text-card-foreground shadow-sm">
           <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Active Positions</div>
@@ -19,8 +19,8 @@ export function TraderDashboard({ data }: { data: any }) {
         </div>
         <div className="p-4 rounded-xl border bg-card text-card-foreground shadow-sm">
           <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Active PnL</div>
-          <div className={`text-2xl font-bold mt-1 ${stats.totalPnL >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-            ${stats.totalPnL.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          <div className={`text-2xl font-bold mt-1 ${(stats.totalActivePnL || 0) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+            ${(stats.totalActivePnL || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
         </div>
       </div>
@@ -62,7 +62,7 @@ export function TraderDashboard({ data }: { data: any }) {
           🕒 Recent Trades
         </h3>
         <div className="space-y-2">
-          {trades.slice(0, 5).map((t: any, i: number) => (
+          {trades.slice(-5).reverse().map((t: any, i: number) => (
             <div key={i} className="flex items-center justify-between p-3 rounded-lg border bg-card/50 text-xs">
               <div className="flex items-center gap-3">
                 <span className={`px-2 py-0.5 rounded font-bold ${t.side === 'BUY' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>

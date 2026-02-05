@@ -6,49 +6,98 @@ const DATA_API = "https://data-api.polymarket.com";
 const OUTPUT_DIR = path.join(process.cwd(), "web/content/docs/lobstah-trader/trader-spotlights", TRADER_ADDRESS);
 const OUTPUT_FILE = path.join(OUTPUT_DIR, "predictions.ts");
 
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 async function scout() {
-    console.log(`🦞 LobstahScout: Deep-diving trader ${TRADER_ADDRESS}...`);
+    console.log(`🦞 LobstahScout: Deep-diving trader ${TRADER_ADDRESS} with backoff...`);
 
     try {
-        // 1. Fetch Positions
+        // 1. Fetch Positions (latest snapshot)
         const posRes = await fetch(`${DATA_API}/positions?user=${TRADER_ADDRESS}`);
         const positions = await posRes.json();
 
-        // 2. Paginated Fetch for Trades
+        // 2. Discover total extent (since API doesn't give a total count, we walk back until empty)
         let allTrades: any[] = [];
         let offset = 0;
         const limit = 100;
-        let hasMore = true;
+        let consecutiveEmptyBatches = 0;
 
-        while (hasMore) {
-            console.log(`📡 Fetching trades (offset: ${offset})...`);
-            const tradeRes = await fetch(`${DATA_API}/trades?user=${TRADER_ADDRESS}&limit=${limit}&offset=${offset}`);
-            const batch = await tradeRes.json();
+        // Note: The Data API returns newest first by default. 
+        // To get "oldest to newest" from a paginated API that doesn't support 'sort=oldest',
+        // we must fetch everything first, then reverse.
+        
+        while (true) {
+            console.log(`📡 Fetching batch (offset: ${offset})...`);
             
-            if (batch.length > 0) {
-                allTrades = allTrades.concat(batch);
-                offset += limit;
-                // Optional: Stop if we hit a massive amount for now to prevent OOM
-                if (allTrades.length >= 15000) {
-                    console.log("⚠️ Limit reached (15k). Stopping.");
-                    hasMore = false;
+            try {
+                const tradeRes = await fetch(`${DATA_API}/trades?user=${TRADER_ADDRESS}&limit=${limit}&offset=${offset}`);
+                
+                if (tradeRes.status === 429) {
+                    console.log("⚠️ Rate limited. Backing off for 5s...");
+                    await sleep(5000);
+                    continue;
                 }
-            } else {
-                hasMore = false;
+
+                const batch = await tradeRes.json();
+                
+                if (batch && Array.isArray(batch) && batch.length > 0) {
+                    allTrades = allTrades.concat(batch);
+                    offset += limit;
+                    consecutiveEmptyBatches = 0;
+                    
+                    // Small delay to be polite and avoid instant 429
+                    await sleep(500); 
+
+                    if (allTrades.length >= 20000) {
+                        console.log("🛑 Safety ceiling reached (20k).");
+                        break;
+                    }
+                } else {
+                    console.log("🏁 Hit empty batch. Reached the end of available history.");
+                    break;
+                }
+            } catch (err) {
+                console.error("📡 Request failed, retrying in 2s...", err);
+                await sleep(2000);
             }
         }
 
-        const trades = allTrades;
+        // 5. Load Existing Data for De-duplication
+        let existingTrades: any[] = [];
+        if (fs.existsSync(OUTPUT_FILE)) {
+            try {
+                const existingFile = fs.readFileSync(OUTPUT_FILE, 'utf-8');
+                // Extract JSON from the export string
+                const jsonMatch = existingFile.match(/traderData = ([\s\S]*?);/);
+                if (jsonMatch) {
+                    const parsed = JSON.parse(jsonMatch[1]);
+                    existingTrades = parsed.trades || [];
+                }
+            } catch (e) {
+                console.log("⚠️ Could not parse existing predictions.ts, starting fresh.");
+            }
+        }
 
-        // 3. Simple Stats Calculation
+        // Merge and De-duplicate by transactionHash or unique ID
+        // Note: Data API trades have 'transactionHash' and 'timestamp'
+        const tradeMap = new Map();
+        [...existingTrades, ...allTrades].forEach(t => {
+            const key = t.id || `${t.transactionHash}-${t.asset}-${t.timestamp}`;
+            tradeMap.set(key, t);
+        });
+
+        const mergedTrades = Array.from(tradeMap.values())
+            .sort((a, b) => a.timestamp - b.timestamp); // Keep chronological
+
         const stats = {
-            totalTrades: trades.length,
+            totalTradesFetched: mergedTrades.length,
             activePositions: positions.length,
-            totalPnL: positions.reduce((acc: number, p: any) => acc + (p.cashPnl || 0), 0),
-            winRate: 0 // Logic for historical win rate would go here based on resolved trades
+            totalActivePnL: positions.reduce((acc: number, p: any) => acc + (p.cashPnl || 0), 0),
+            firstTradeDate: mergedTrades.length > 0 ? new Date(mergedTrades[0].timestamp * 1000).toISOString() : null,
+            lastTradeDate: mergedTrades.length > 0 ? new Date(mergedTrades[mergedTrades.length - 1].timestamp * 1000).toISOString() : null
         };
 
-        // 4. Generate the predictions.ts content
+        // 6. Generate the predictions.ts content
         const fileContent = `/**
  * AUTO-GENERATED BY LOBSTAH-SCOUT
  * Last Updated: ${new Date().toISOString()}
@@ -58,21 +107,20 @@ export const traderData = {
     address: "${TRADER_ADDRESS}",
     stats: ${JSON.stringify(stats, null, 4)},
     positions: ${JSON.stringify(positions, null, 4)},
-    trades: ${JSON.stringify(trades, null, 4)}
+    trades: ${JSON.stringify(mergedTrades, null, 4)}
 };
 `;
 
-        // 5. Write to file
+        // 7. Write to file
         if (!fs.existsSync(OUTPUT_DIR)) {
             fs.mkdirSync(OUTPUT_DIR, { recursive: true });
         }
         fs.writeFileSync(OUTPUT_FILE, fileContent);
 
-        console.log(`✅ Success! Dashboard data written to: ${OUTPUT_FILE}`);
-        console.log(`📊 Summary: ${stats.totalTrades} trades, ${stats.activePositions} active positions.`);
+        console.log(`✅ Success! ${mergedTrades.length} unique trades archived in: ${OUTPUT_FILE}`);
 
     } catch (error) {
-        console.error("❌ Failed to scout trader:", error);
+        console.error("❌ Critical failure during scout:", error);
     }
 }
 

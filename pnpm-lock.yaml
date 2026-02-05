@@ -11,6 +11,9 @@ importers:
       '@polymarket/clob-client':
         specifier: ^5.2.1
         version: 5.2.1(typescript@5.9.3)(zod@4.3.6)
+      viem:
+        specifier: ^2.45.1
+        version: 2.45.1(typescript@5.9.3)(zod@4.3.6)
 
   web:
     dependencies:
@@ -41,6 +44,9 @@ importers:
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0
+      viem:
+        specifier: ^2.45.1
+        version: 2.45.1(typescript@5.9.3)(zod@4.3.6)
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4.1.18
